@@ -4,8 +4,7 @@ from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 file_handler = logging.FileHandler('server.log')
-# app.logger.addHandler(file_handler)
-# app.logger.setLevel(logging.INFO)
+
 
 PROJECT_HOME = os.path.dirname(os.path.realpath(__file__))
 UPLOAD_FOLDER = '{}/uploads/'.format(PROJECT_HOME)
@@ -20,14 +19,14 @@ def create_new_folder(local_dir):
 
 @app.route('/', methods = ['POST'])
 def api_root():
-    # app.logger.info(PROJECT_HOME)
+
     if request.method == 'POST' and request.files['image']:
-    	# app.logger.info(app.config['UPLOAD_FOLDER'])
+  
     	img = request.files['image']
     	img_name = secure_filename(img.filename)
     	create_new_folder(app.config['UPLOAD_FOLDER'])
     	saved_path = os.path.join(app.config['UPLOAD_FOLDER'], img_name)
-    	# app.logger.info("saving {}".format(saved_path))
+    	
     	img.save(saved_path)
     	return send_from_directory(app.config['UPLOAD_FOLDER'],img_name, as_attachment=True)
     else:
