@@ -3,6 +3,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
         <title>Material Design Bootstrap</title>
         <!-- Font Awesome -->
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
@@ -14,11 +15,19 @@
         <link href="css/style.css" rel="stylesheet">
         <title>Test Dense Server</title>
     </head>
-    <body>
-        <form class="text-center border border-light p-5" method="POST" action="http://localhost:5000/" enctype=multipart/form-data>
-            file : <input type="file" name="image"><br />
-            <input type="submit" value="submit"><br />
-        </form>
+    <body style="background-color: aliceblue;">
+        <div style="width: 100%;text-align: center;margin-top: 200px;background-color: white;border-radius: 50px;
+        background: #ffffff;
+        box-shadow:  20px 20px 60px #d9d9d9, 
+                     -20px -20px 60px #ffffff;border-color: transparent"><form class="text-center border border-light p-5" method="POST" action="http://localhost:5000/" enctype=multipart/form-data>
+            <h2>Upload the file</h2><br /><br/><br/>
+            <input type="file" name="image"><br /><br/><br/>
+            <button type="submit" value="submit" class="btn">Submit</button><br />
+        </form></div>
+        
+
+
+        
 
         <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
         <!-- Bootstrap tooltips -->
