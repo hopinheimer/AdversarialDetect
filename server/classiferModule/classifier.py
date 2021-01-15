@@ -1,21 +1,11 @@
-from flask import Flask, url_for, send_from_directory, request, render_template
-import logging
-import os
-from werkzeug.utils import secure_filename
-
 import matplotlib as plt
 import torchvision
 from PIL import Image
 import torch
-import os
 from torchvision import models
 import torchvision.transforms.functional as TF
 import torch.nn.functional as F
 import torchvision.transforms as T
-
-
-app = Flask(__name__)
-file_handler = logging.FileHandler('server.log')
 
 
 class detect(torch.nn.Module):
@@ -61,57 +51,21 @@ class detect(torch.nn.Module):
         return {'test_loss': loss.detach().item(), 'test_acc': acc.item()}
 
 
-model = torch.load('./classiferModule/models/model.pt')
+model = torch.load('./models/model.pt')
 model.eval()
 
 
 def classifierFunc():
     image_size = 28
-    dataset = torchvision.datasets.ImageFolder('./uploads', transform=torchvision.transforms.Compose(
+    dataset = torchvision.datasets.ImageFolder('../server/uploads', transform=torchvision.transforms.Compose(
         [T.Resize((image_size, image_size), interpolation=Image.NEAREST), T.ToTensor()]))
 
-    test_loader = torch.utils.data.DataLoader(dataset, batch_size=1)
+    test_loader = torch.utils.data.DataLoader(dataset)
     for image, l in test_loader:
+
         out = model.forward(image)      # Model predictions
         print(out)
-        break
+        # Model prediction shape
 
 
-PROJECT_HOME = os.path.dirname(os.path.realpath(__file__))
-UPLOAD_FOLDER = '{}/uploads/child'.format(PROJECT_HOME)
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
-
-def create_new_folder(local_dir):
-    newpath = local_dir
-    if not os.path.exists(newpath):
-        os.makedirs(newpath)
-    return newpath
-
-
-@app.route('/', methods=['POST'])
-def api_root():
-
-    if request.method == 'POST' and request.files['image']:
-
-        img = request.files['image']
-        img_name = secure_filename(img.filename)
-        create_new_folder(app.config['UPLOAD_FOLDER'])
-        saved_path = os.path.join(app.config['UPLOAD_FOLDER'], img_name)
-
-        img.save(saved_path)
-        result = classifierFunc()
-        print(result)
-        return send_from_directory(app.config['UPLOAD_FOLDER'], img_name, as_attachment=True)
-        # return send_from_directory(app.config['UPLOAD_FOLDER'], img_name, as_attachment=True)
-    else:
-        return "Where is the image?"
-
-
-@app.route('/')
-def home():
-    return render_template('home.html')
-
-
-if __name__ == '__main__':
-    app.run(debug=True)
+classifierFunc()
